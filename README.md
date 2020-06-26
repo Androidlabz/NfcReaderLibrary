@@ -12,26 +12,27 @@ maven { url 'https://jitpack.io'
 } 
 }
 
-
-
-dependencies 
-{
-     implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'
-}
+dependencies {
+     implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
 }
 
 
 Add NFC Permision in androidmanifest.xml
-  <uses-permission android:name="android.permission.NFC" />
+ <uses-permission android:name="android.permission.NFC" />
+  
+  
 
-Implementation :
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
+
+
   private NfcAdapter mNfcAdapter;
   private NfcChipReader mNfcChipReader;
   
+  
    @Override
   protected void onCreate(Bundle savedInstanceState) {
+  
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     //initialize nfc adapter which is default in-built android class
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
   
   //In on resume method enable the nfc adapter foreground dispatch
    @Override public void onResume() {
+   
     super.onResume();
     IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
     IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
   
    @Override
   protected void onPause() {
+  
     super.onPause();
     if (mNfcAdapter != null) {
       mNfcAdapter.disableForegroundDispatch(this);
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onNewIntent(Intent intent) {
+  
     super.onNewIntent(intent);
     if (mNfcChipReader != null) {
       mNfcChipReader.nfcTagReadBuilder(intent);
