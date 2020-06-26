@@ -2,7 +2,7 @@
 
 Android Library to read NFC Tag
 
-Add the JitPack repository to your build file
+// Add the JitPack repository to your build file
 
 allprojects { 
 repositories 
@@ -12,17 +12,20 @@ maven { url 'https://jitpack.io'
 } 
 }
 
+// Add Dependecy
 dependencies {
      implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
 }
 
 
-Add NFC Permision in androidmanifest.xml
+// Add NFC Permision in androidmanifest.xml
  <uses-permission android:name="android.permission.NFC" />
   
   
-
-
+  // Declare nfc adapter and chip reader object in the class
+  
+  
+  
 public class MainActivity extends AppCompatActivity{
 
 
