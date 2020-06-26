@@ -4,7 +4,10 @@ Android Library to read NFC Tag
 
 Add the JitPack repository to your build file
 
-allprojects { repositories { ... maven { url 'https://jitpack.io' } } }
+allprojects { repositories 
+{ ... maven { url 'https://jitpack.io' } 
+} 
+}
 
 dependencies {
 	       dependencies {
