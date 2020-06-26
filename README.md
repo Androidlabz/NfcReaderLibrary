@@ -10,6 +10,10 @@ allprojects { repositories
 }
 
 
+
+
+
+
 dependencies {
 	       dependencies {
 	        implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'
