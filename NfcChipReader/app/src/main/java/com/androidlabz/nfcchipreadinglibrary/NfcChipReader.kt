@@ -14,19 +14,23 @@ import android.os.Parcel
 import java.io.IOException
 
 open class NfcChipReader(
-    private val mNfcAdapter: NfcAdapter?,
-    private val mCallback: Callback
+    val mNfcAdapter: NfcAdapter,
+    val mCallback: Callback
 ) {
     fun nfcTagReadBuilder(intent: Intent) {
         if (mNfcAdapter != null) {
-            if (intent.extras != null) {
-                var mTag =
-                    intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-                mTag = patchTag(mTag)
-                mTag?.let { readFromNFC(it, intent) }
+            if (mNfcAdapter.isEnabled) {
+                if (intent.extras != null) {
+                    var mTag =
+                        intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+                    mTag = patchTag(mTag)
+                    mTag?.let { readFromNFC(it, intent) }
+                }
+            } else {
+                mCallback.onNfcDisabled()
             }
         } else {
-            mCallback.onNfcDisabled()
+            mCallback.onNfcNotFoundInDevice()
         }
     }
 
@@ -95,63 +99,71 @@ open class NfcChipReader(
 
     private fun readFromNFC(tag: Tag, intent: Intent) {
         if (mNfcAdapter != null) {
-            try {
-                val ndef = Ndef.get(tag)
-                if (ndef != null) {
-                    ndef.connect()
-                    val ndefMessage = ndef.ndefMessage
-                    if (ndefMessage != null) {
-                        val messages =
-                            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-                        if (messages != null) {
-                            val ndefMessages =
-                                arrayOfNulls<NdefMessage>(messages.size)
-                            for (i in messages.indices) {
-                                ndefMessages[i] = messages[i] as NdefMessage
-                            }
-                            val record = ndefMessages[0]!!.records[0]
-                            val payload = record.payload
-                            val text = String(payload)
-                            mCallback.onRecieveTag(text)
-                            ndef.close()
-                        }
-                    } else {
-                        mCallback.onReadTagError()
-                    }
-                } else {
-                    val format = NdefFormatable.get(tag)
-                    if (format != null) {
-                        try {
-                            format.connect()
-                            var ndefMessage: NdefMessage? = null
-                            ndefMessage = ndef!!.ndefMessage
-                            if (ndefMessage != null) {
-                                val message =
-                                    String(ndefMessage.records[0].payload)
-                                mCallback.onRecieveTag(message)
+            if (mNfcAdapter.isEnabled) {
+                try {
+                    val ndef = Ndef.get(tag)
+                    if (ndef != null) {
+                        ndef.connect()
+                        val ndefMessage = ndef.ndefMessage
+                        if (ndefMessage != null) {
+                            val messages =
+                                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
+                            if (messages != null) {
+                                val ndefMessages =
+                                    arrayOfNulls<NdefMessage>(messages.size)
+                                for (i in messages.indices) {
+                                    ndefMessages[i] = messages[i] as NdefMessage
+                                }
+                                val record = ndefMessages[0]!!.records[0]
+                                val payload = record.payload
+                                val text = String(payload)
+                                mCallback.onRecieveTag(text)
                                 ndef.close()
-                            } else {
-                                mCallback.onReadTagError()
                             }
-                        } catch (e: IOException) {
-                            e.printStackTrace()
+                        } else {
+                            mCallback.onReadTagError()
                         }
                     } else {
-                        mCallback.onReadTagError()
+                        val format = NdefFormatable.get(tag)
+                        if (format != null) {
+                            try {
+                                format.connect()
+                                var ndefMessage: NdefMessage? = null
+                                ndefMessage = ndef!!.ndefMessage
+                                if (ndefMessage != null) {
+                                    val message =
+                                        String(ndefMessage.records[0].payload)
+                                    mCallback.onRecieveTag(message)
+                                    ndef.close()
+                                } else {
+                                    mCallback.onReadTagError()
+                                }
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
+                        } else {
+                            mCallback.onReadTagError()
+                        }
                     }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } else {
+                mCallback.onNfcDisabled()
             }
         } else {
-            mCallback.onNfcDisabled()
+            mCallback.onNfcNotFoundInDevice()
         }
     }
 
     interface Callback {
         fun onRecieveTag(tagContents: String?)
+
         fun onReadTagError()
+
         fun onNfcDisabled()
+
+        fun onNfcNotFoundInDevice()
     }
 
 }
