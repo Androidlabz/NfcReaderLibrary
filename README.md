@@ -2,7 +2,7 @@
 
 Android Library to read NFC Tag
 
-// Add the JitPack repository to your build file
+ Add the JitPack repository to your build file
 
 allprojects { 
 repositories 
@@ -12,30 +12,26 @@ maven { url 'https://jitpack.io'
 } 
 }
 
-// Add Dependecy
-dependencies {
-     implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
-}
+       Add Dependecy
+       dependencies {
+        implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
+       }
 
 
-// Add NFC Permision in androidmanifest.xml
- <uses-permission android:name="android.permission.NFC" />
+      Add NFC Permision in androidmanifest.xml
+      <uses-permission android:name="android.permission.NFC" />
   
   
-  // Declare nfc adapter and chip reader object in the class
+     Declare nfc adapter and chip reader object in the class
   
-  
-  
-public class MainActivity extends AppCompatActivity{
+     public class MainActivity extends AppCompatActivity{
 
 
-  private NfcAdapter mNfcAdapter;
-  private NfcChipReader mNfcChipReader;
+    private NfcAdapter mNfcAdapter;
+    private NfcChipReader mNfcChipReader;
   
-  
-   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-  
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     //initialize nfc adapter which is default in-built android class
@@ -59,11 +55,11 @@ public class MainActivity extends AppCompatActivity{
           // Callback to no nfc found in device
         }
       });
-  }
+    }
   
   
-  //In on resume method enable the nfc adapter foreground dispatch
-   @Override public void onResume() {
+    //In on resume method enable the nfc adapter foreground dispatch
+    @Override public void onResume() {
    
     super.onResume();
     IntentFilter tagDetected = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
@@ -85,26 +81,26 @@ public class MainActivity extends AppCompatActivity{
     }
   }
   
-  //In on pause disable the nfc adapter
+    //In on pause disable the nfc adapter foreground dispatch
   
-   @Override
-  protected void onPause() {
+     @Override
+     protected void onPause() {
   
     super.onPause();
     if (mNfcAdapter != null) {
       mNfcAdapter.disableForegroundDispatch(this);
     }
-  }
+    }
 
-//on New intent we will recieve the tag in parcelable extra
+    //on New intent we will recieve the tag in parcelable extra
 
-  @Override
-  protected void onNewIntent(Intent intent) {
+    @Override
+    protected void onNewIntent(Intent intent) {
   
     super.onNewIntent(intent);
     if (mNfcChipReader != null) {
       mNfcChipReader.nfcTagReadBuilder(intent);
     }
-  }
+    }
 
 
