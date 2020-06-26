@@ -1,6 +1,6 @@
 # NfcReaderLibrary
 
-Android app to track visitors count and show live comments
+Android app to read NFC Tag
 
 Add the JitPack repository to your build file
 
