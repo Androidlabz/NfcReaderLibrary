@@ -2,9 +2,9 @@
 
 Android Library to read NFC Tag
 
- Add the JitPack repository to your build file
- 
  Gradle:
+
+    Add the JitPack repository to your build file
 
     allprojects { 
       repositories 
@@ -15,21 +15,23 @@ Android Library to read NFC Tag
    }
        
     dependencies {
-        implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
+        implementation 'com.github.Androidlabz:NfcReaderLibrary:1.0.2'}
        }
        
-  Add NFC Permision in androidmanifest.xml
+   Add NFC Permision in androidmanifest.xml
        
-   <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.NFC" />
   
   
-    Declare nfc adapter and chip reader object in the class
+ Declare nfc adapter and chip reader object in the class
   
      public class MainActivity extends AppCompatActivity{
 
 
     private NfcAdapter mNfcAdapter;
     private NfcChipReader mNfcChipReader;
+    
+  Initialize the NfcAdapter and NfcChipReader
   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ Android Library to read NFC Tag
     }
   
   
-    //In on resume method enable the nfc adapter foreground dispatch
+ Enable nfc foreground disptach in onresume method
+  
     @Override public void onResume() {
    
     super.onResume();
@@ -72,17 +75,15 @@ Android Library to read NFC Tag
     if (mNfcAdapter != null) {
       if (!mNfcAdapter.isEnabled()) {
         // Nfc is disabled
-        Toast.makeText(this, "Nfc Disabled", Toast.LENGTH_SHORT).show();
       }
       mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilter, null);
       mNfcAdapter.isNdefPushEnabled();
      } else {
       // No nfc found in device
-      Toast.makeText(this, "No Nfc Found", Toast.LENGTH_SHORT).show();
      }
    }
   
-    //In on pause disable the nfc adapter foreground dispatch
+  Disable the nfc adapter foreground dispatch in onpause method
   
      @Override
      protected void onPause() {
