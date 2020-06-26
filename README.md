@@ -39,7 +39,9 @@ Android Library to read NFC Tag
     setContentView(R.layout.activity_main);
     //initialize nfc adapter which is default in-built android class
     mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-    //check if nfc adapter is not null and initialize the chip reader object
+
+ initialize the chip reader object the callbacks will give the scanned nfc tags
+ 
     if (mNfcAdapter != null) {
       mNfcChipReader = new NfcChipReader(mNfcAdapter, new NfcChipReader.Callback() {
         @Override public void onRecieveTag(String s) {
@@ -93,7 +95,8 @@ Android Library to read NFC Tag
      }
     }
 
-    //on New intent we will recieve the tag in parcelable extra
+//On Receving intent in the new intent pass on the intent to NfcChipReader tag builder method will scan the nfc tag and will pass if its valid
+
     @Override
     protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
