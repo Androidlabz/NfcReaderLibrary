@@ -1,2 +1,2 @@
-include ':nfcchipreaderlibrary'
-rootProject.name = "NfcChipReader"
+include ':app'
+rootProject.name = "nfcchipreadinglibrary"
