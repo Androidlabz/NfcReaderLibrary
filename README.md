@@ -3,26 +3,27 @@
 Android Library to read NFC Tag
 
  Add the JitPack repository to your build file
+ 
+ Gradle:
 
-allprojects { 
-repositories 
-{ ...
-maven { url 'https://jitpack.io'
-} 
-} 
-}
-
-       Add Dependecy
-       dependencies {
+    allprojects { 
+      repositories 
+      { ...
+         maven { url 'https://jitpack.io'
+     } 
+     } 
+   }
+       
+    dependencies {
         implementation 'com.github.Androidlabz:NfcReaderLibrary:LatestVersion'}
        }
-
-
-      Add NFC Permision in androidmanifest.xml
-      <uses-permission android:name="android.permission.NFC" />
+       
+  Add NFC Permision in androidmanifest.xml
+       
+   <uses-permission android:name="android.permission.NFC" />
   
   
-     Declare nfc adapter and chip reader object in the class
+    Declare nfc adapter and chip reader object in the class
   
      public class MainActivity extends AppCompatActivity{
 
@@ -75,32 +76,29 @@ maven { url 'https://jitpack.io'
       }
       mNfcAdapter.enableForegroundDispatch(this, pendingIntent, nfcIntentFilter, null);
       mNfcAdapter.isNdefPushEnabled();
-    } else {
+     } else {
       // No nfc found in device
       Toast.makeText(this, "No Nfc Found", Toast.LENGTH_SHORT).show();
-    }
-  }
+     }
+   }
   
     //In on pause disable the nfc adapter foreground dispatch
   
      @Override
      protected void onPause() {
-  
-    super.onPause();
-    if (mNfcAdapter != null) {
-      mNfcAdapter.disableForegroundDispatch(this);
-    }
+       super.onPause();
+       if (mNfcAdapter != null) {
+       mNfcAdapter.disableForegroundDispatch(this);
+     }
     }
 
     //on New intent we will recieve the tag in parcelable extra
-
     @Override
     protected void onNewIntent(Intent intent) {
-  
     super.onNewIntent(intent);
     if (mNfcChipReader != null) {
       mNfcChipReader.nfcTagReadBuilder(intent);
-    }
+     }
     }
 
 
