@@ -1,6 +1,6 @@
 # NfcReaderLibrary
 
-Android app to read NFC Tag
+Android Library to read NFC Tag
 
 Add the JitPack repository to your build file
 
